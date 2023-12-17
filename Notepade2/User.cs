@@ -37,7 +37,17 @@ namespace Notepade2
 
         public Recording GetNameData(string searchFirstOrLastName)
         {
-            return records.FirstOrDefault(r => r.FirstName.Contains(searchFirstOrLastName) || r.LastName.Contains(searchFirstOrLastName));
+            // Читерский код
+            //return records.FirstOrDefault(r => r.FirstName.Contains(searchFirstOrLastName) || r.LastName.Contains(searchFirstOrLastName));
+
+            foreach (var recording in records)
+            {
+                if (recording.FirstName.Contains(searchFirstOrLastName) || recording.LastName.Contains(searchFirstOrLastName))
+                {
+                    return recording;
+                }
+            }
+            return null;
         }
 
     }
