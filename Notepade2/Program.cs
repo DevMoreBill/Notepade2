@@ -107,7 +107,7 @@ namespace Notepade2
 
                         foreach (User userDel in notebook.Users)
                         {
-                            Recording recording = userDel.GetFirstNameData(nameToDelete);
+                            Recording recording = userDel.GetNameData(nameToDelete);
                             if (recording != null)
                             {
                                 Console.WriteLine("Вы уверены, что хотите удалить эту запись? (да/нет)");
@@ -156,7 +156,7 @@ namespace Notepade2
 
                         foreach (User userEdit in notebook.Users)
                         {
-                            Recording recording = userEdit.GetFirstNameData(nameToEdit);
+                            Recording recording = userEdit.GetNameData(nameToEdit);
                             if (recording != null)
                             {
                                 Console.WriteLine("Вы хотите отредактировать этот контакт? (да/нет)");
@@ -238,9 +238,7 @@ namespace Notepade2
                         notebook.SaveTextFile();
                         break;
                     case "4":
-
-                        notebook.SortUsersAndRecordings();
-                        notebook.GetAllRecordings();
+                        notebook.AlphabeticalSorting(); 
                         break;
 
                     case "5":
