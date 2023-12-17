@@ -28,6 +28,7 @@ namespace Notepade2
             //916-777-88-00
             //916-777-8-800
             string phoneNumberCheck = @"(^\+\d{1,2})?((\(\d{3}\))|(\-?\d{3}\-)|(\d{3}))((\d{3}\-\d{4})|(\d{3}\-\d\d\-\d\d)|(\d{7})|(\d{3}\-\d\-\d{3}))";
+            //Это был мой вариант регулярки для номера телефона
             //string phoneNumberCheck = @"\+7-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}";
             while (true)
             {
@@ -36,7 +37,7 @@ namespace Notepade2
                 Console.WriteLine("\t1. Добавить запись");
                 Console.WriteLine("\t2. Удалить запись");
                 Console.WriteLine("\t3. Редактировать запись");
-                Console.WriteLine("\t4. Вывести все записи");
+                Console.WriteLine("\t4. Вывести все записи в алфавитном порядке");
                 Console.WriteLine("\t5. Выход");
                 Console.WriteLine(new string('-', 60));
 
@@ -238,7 +239,10 @@ namespace Notepade2
                         notebook.SaveTextFile();
                         break;
                     case "4":
-                        notebook.AlphabeticalSorting(); 
+                        //добавить выбор сортировки по имени или фамилии
+                        notebook.AlphabeticalSortingFirstName();
+                        notebook.AlphabeticalSortingLastName();
+
                         break;
 
                     case "5":

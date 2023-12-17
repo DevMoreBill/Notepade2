@@ -104,8 +104,7 @@ namespace Notepade2
             }
         }
 
-
-        public void AlphabeticalSorting()
+        public void AlphabeticalSortingFirstName()
         {   // Аналогичный читерский код
             //users = users.OrderBy(u => u.records.First().FirstName).ToList();
 
@@ -131,7 +130,33 @@ namespace Notepade2
 
             GetAllRecordings();
         }
+
+        public void AlphabeticalSortingLastName()
+        {   
+            User[] usersArray = users.ToArray();
+
+            for (int i = 0; i < usersArray.Length - 1; i++)
+            {
+                for (int j = 0; j < usersArray.Length - 1 - i; j++)
+                {
+                    string lastName1 = usersArray[j].records.First().LastName;
+                    string lastName2 = usersArray[j + 1].records.First().LastName;
+
+                    if (lastName1.CompareTo(lastName2) > 0)
+                    {
+                        User temp = usersArray[j];
+                        usersArray[j] = usersArray[j + 1];
+                        usersArray[j + 1] = temp;
+                    }
+                }
+            }
+            users.Clear();
+            users.AddRange(usersArray);
+
+            GetAllRecordings();
+        }
         
+
 
     }
 
