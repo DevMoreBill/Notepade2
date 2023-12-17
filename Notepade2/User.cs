@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace Notepade2
 {
     internal class User
+
     {
         public List<Recording> records;
 
@@ -34,10 +35,9 @@ namespace Notepade2
             }
         }
 
-        public List<Recording> GetRecordings()
+        public Recording GetRecordingByIdentificationData(string identificationData)
         {
-            return records;
-
+            return records.FirstOrDefault(r => r.IdentificationData.Contains(identificationData));
         }
     }
 }
