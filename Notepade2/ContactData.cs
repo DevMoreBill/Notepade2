@@ -9,6 +9,11 @@ namespace Notepade2
     internal class ContactData
     {
         public string Phone { get; set; }
-        public string Adress { get; set; }
+        private string adress;
+        public string Adress
+        {
+            get { return adress; }
+            set { adress = value == null ? value : "Адрес не указан"; }
+        }
     }
 }
