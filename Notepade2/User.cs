@@ -35,9 +35,24 @@ namespace Notepade2
             }
         }
 
-        public Recording GetRecordingByIdentificationData(string identificationData)
+        public Recording GetFirstNameData(string searchFirstOrLastName)
         {
-            return records.FirstOrDefault(r => r.IdentificationData.Contains(identificationData));
+            return records.FirstOrDefault(r => r.FirstName.Contains(searchFirstOrLastName) || r.LastName.Contains(searchFirstOrLastName));
         }
+
+       //public void PrintRecord(Recording recording) 
+       // {
+       //     foreach (Recording record in recording)
+       //     {
+       //         Console.WriteLine(new string('-', 60));
+       //         Console.WriteLine($"\tИмя: {record.FirstName}");
+       //         Console.WriteLine($"\tФамилия: {record.LastName}");
+       //         Console.WriteLine($"\tТелефон: {record.ContactData.Phone}");
+       //         Console.WriteLine($"\tАдрес: {record.ContactData.Adress}");
+       //         Console.WriteLine($"\tПримечание: {record.Note}");
+       //         Console.WriteLine(new string('-', 60));
+       //     }
+            
+       // }
     }
 }

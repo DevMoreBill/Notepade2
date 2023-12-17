@@ -31,7 +31,8 @@ namespace Notepade2
                 {
                     foreach (Recording recording in user.records)
                     {
-                        writer.WriteLine($"Идентификационные данные: {recording.IdentificationData}");
+                        writer.WriteLine($"Имя: {recording.FirstName}");
+                        writer.WriteLine($"Фамилия: {recording.LastName}");
                         writer.WriteLine($"Телефон: {recording.ContactData.Phone}");
                         writer.WriteLine($"Адрес: {recording.ContactData.Adress}");
                         writer.WriteLine($"Примечание: {recording.Note}");
@@ -49,7 +50,7 @@ namespace Notepade2
                 User currentUser = null;
                 while ((line = reader.ReadLine()) != null)
                 {
-                    if (line.StartsWith("Идентификационные данные: "))
+                    if (line.StartsWith("Имя: "))
                     {
                         if (currentUser != null)
                         {
@@ -57,23 +58,26 @@ namespace Notepade2
 
                         }
                         currentUser = new User();
-                        string identificationData = line.Substring("Идентификационные данные: ".Length);
+                        string firstName = line.Substring("Имя: ".Length);
+                        string lastName = reader.ReadLine().Substring("Фамилия: ".Length);
                         string phone = reader.ReadLine().Substring("Телефон: ".Length);
-                        string address = reader.ReadLine().Substring("Адрес: ".Length);
+                        string adress = reader.ReadLine().Substring("Адрес: ".Length);
                         string note = reader.ReadLine().Substring("Примечание: ".Length);
 
-                        Recording newRecord = new Recording
+
+                        Recording newRecording = new Recording()
                         {
-                            IdentificationData = identificationData,
-                            ContactData = new ContactData
+                            FirstName = firstName,
+                            LastName = lastName,
+                            ContactData  = new ContactData
                             {
                                 Phone = phone,
-                                Adress = address
+                                Adress = adress
                             },
-                            Note = note
-
+                        Note = note
                         };
-                        currentUser.AddRecording(newRecord);
+                        
+                        currentUser.AddRecording(newRecording);
                     }
                 }
                 if (currentUser != null)
@@ -89,11 +93,13 @@ namespace Notepade2
             {                
                 foreach (Recording recording in user.records)
                 {
-                    Console.WriteLine($"Идентификационные данные: {recording.IdentificationData}");
+                    Console.WriteLine(new string('-', 60));
+                    Console.WriteLine($"Имя: {recording.FirstName}");
+                    Console.WriteLine($"Фамилия: {recording.LastName}");
                     Console.WriteLine($"Телефон: {recording.ContactData.Phone}");
                     Console.WriteLine($"Адрес: {recording.ContactData.Adress}");
                     Console.WriteLine($"Примечание: {recording.Note}");
-                    Console.WriteLine(new string('-', 50));
+                    
 
                 }
             }
@@ -103,7 +109,7 @@ namespace Notepade2
         {
             foreach (var user in users)
             {
-                user.records = user.records.OrderBy(r => r.IdentificationData).ToList();
+                user.records = user.records.OrderBy(r => r.FirstName).ToList();
             }
         }
 

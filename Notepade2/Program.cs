@@ -31,14 +31,14 @@ namespace Notepade2
             //string phoneNumberCheck = @"\+7-[0-9]{3}-[0-9]{3}-[0-9]{2}-[0-9]{2}";
             while (true)
             {
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine(new string('-', 60));
                 Console.WriteLine("Выберите действие:");
                 Console.WriteLine("\t1. Добавить запись");
                 Console.WriteLine("\t2. Удалить запись");
                 Console.WriteLine("\t3. Редактировать запись");
                 Console.WriteLine("\t4. Вывести все записи");
                 Console.WriteLine("\t5. Выход");
-                Console.WriteLine(new string('-', 50));
+                Console.WriteLine(new string('-', 60));
 
                 string choice = Console.ReadLine();
 
@@ -46,12 +46,14 @@ namespace Notepade2
                 {
                     case "1":
                         User user = new User();
-                        Console.WriteLine(new string('-', 50));
+                        Console.WriteLine(new string('-', 60));
                         Console.WriteLine("Введите данные для новой записи:");
-                        Console.WriteLine(new string('-', 50));
+                        Console.WriteLine(new string('-', 60));
 
-                        Console.Write("Введите ФИО: ");
-                        string identificationData = Console.ReadLine();
+                        Console.Write("Введите имя: ");
+                        string firstName = Console.ReadLine();
+                        Console.Write("Введите фамилию: ");
+                        string lastName = Console.ReadLine();
                         string phone;
                         do
                         {
@@ -82,7 +84,8 @@ namespace Notepade2
 
                         Recording newRecording = new Recording()
                         {
-                            IdentificationData = identificationData,
+                            FirstName = firstName,
+                            LastName = lastName,
                             ContactData = contactData,
                             Note = note
                         };
@@ -91,34 +94,46 @@ namespace Notepade2
                         notebook.AddUser(user);
                         notebook.SaveTextFile();
                         Console.WriteLine("Запись добавлена");
-                        Console.WriteLine(new string('-', 50));
+                        Console.WriteLine(new string('-', 60));
                         break;
 
 
                     case "2":
-                        Console.WriteLine("Введите данные записи для удаления:");
-                        string identificationDataToDelete = Console.ReadLine();
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Введите Имя или Фамилию контакта для удаления:");
+                        Console.WriteLine(new string('-', 60));
+                        string nameToDelete = Console.ReadLine();
                         bool isRecordDeleted = false;
 
                         foreach (User userDel in notebook.Users)
                         {
-                            Recording recording = userDel.GetRecordingByIdentificationData(identificationDataToDelete);
+                            Recording recording = userDel.GetFirstNameData(nameToDelete);
                             if (recording != null)
                             {
                                 Console.WriteLine("Вы уверены, что хотите удалить эту запись? (да/нет)");
+                                foreach (Recording record in userDel.records)
+                                {
+                                    Console.WriteLine(new string('-', 60));
+                                    Console.WriteLine($"\tИмя: {record.FirstName}");
+                                    Console.WriteLine($"\tФамилия: {record.LastName}");
+                                    Console.WriteLine($"\tТелефон: {record.ContactData.Phone}");
+                                    Console.WriteLine($"\tАдрес: {record.ContactData.Adress}");
+                                    Console.WriteLine($"\tПримечание: {record.Note}");
+                                    Console.WriteLine(new string('-', 60));
+                                }
                                 string confirmation = Console.ReadLine();
                                 if (confirmation.ToLower() == "да")
                                 {
                                     userDel.DeleteRecording(recording);
                                     Console.WriteLine("Запись удалена");
-                                    Console.WriteLine(new string('-', 50));
+                                    Console.WriteLine(new string('-', 60));
                                     isRecordDeleted = true;
                                     break;
                                 }
                                 else
                                 {
                                     Console.WriteLine("Удаление отменено");
-                                    Console.WriteLine(new string('-', 50));
+                                    Console.WriteLine(new string('-', 60));
                                     isRecordDeleted = true;
                                     break;
                                 }
@@ -127,73 +142,98 @@ namespace Notepade2
                         if (!isRecordDeleted)
                         {
                             Console.WriteLine("Запись с указанными данными не найдена");
-                            Console.WriteLine(new string('-', 50));
+                            Console.WriteLine(new string('-', 60));
                         }
                         notebook.SaveTextFile();
                         break;
                     case "3":
-                        Console.WriteLine("Введите данные записи для редактирования:");
-                        string identificationDataToEdit = Console.ReadLine();
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Введите Имя или Фамилию контакта для редактирования:");
+                        Console.WriteLine(new string('-', 60));
+                        string nameToEdit = Console.ReadLine();
+                        bool isRecordEdit = false;
                         // Поиск записи по идентификационным данным и редактирование
 
                         foreach (User userEdit in notebook.Users)
                         {
-                            Recording recording = userEdit.GetRecordingByIdentificationData(identificationDataToEdit);
+                            Recording recording = userEdit.GetFirstNameData(nameToEdit);
                             if (recording != null)
                             {
-                                Console.WriteLine("Введите новые данные для записи:");
+                                Console.WriteLine("Вы хотите отредактировать этот контакт? (да/нет)");
                                 foreach (Recording record in userEdit.records)
                                 {
-                                    Console.WriteLine(new string('-', 50));
-                                    Console.WriteLine($"\tИдентификационные данные: {record.IdentificationData}");
+                                    Console.WriteLine(new string('-', 60));
+                                    Console.WriteLine($"\tИмя: {record.FirstName}");
+                                    Console.WriteLine($"\tФамилия: {record.LastName}");
                                     Console.WriteLine($"\tТелефон: {record.ContactData.Phone}");
                                     Console.WriteLine($"\tАдрес: {record.ContactData.Adress}");
                                     Console.WriteLine($"\tПримечание: {record.Note}");
-                                    Console.WriteLine(new string('-', 50));
+                                    Console.WriteLine(new string('-', 60));
                                 }
-                                
-                                Console.Write("Введите ФИО: ");
-                                string newIdentificationData = Console.ReadLine();
 
-                                string newPhone;
-                                do
+                                string confirmation = Console.ReadLine();
+                                if (confirmation.ToLower() == "да")
                                 {
-                                    Console.Write("Введите телефонный номер: ");
-                                    newPhone = Console.ReadLine();
-                                    if (!Regex.IsMatch(newPhone, phoneNumberCheck))
+                                    Console.Write("Введите Имя: ");
+                                    string newFirstName = Console.ReadLine();
+                                    Console.Write("Введите фамилию: ");
+                                    string newLastName = Console.ReadLine();
+
+                                    string newPhone;
+                                    do
                                     {
-                                        Console.WriteLine("Некорректный формат номера телефона. Попробуйте еще раз.");
+                                        Console.Write("Введите телефонный номер: ");
+                                        newPhone = Console.ReadLine();
+                                        if (!Regex.IsMatch(newPhone, phoneNumberCheck))
+                                        {
+                                            Console.WriteLine("Некорректный формат номера телефона. Попробуйте еще раз.");
+                                        }
+                                    } while (!Regex.IsMatch(newPhone, phoneNumberCheck));
+
+                                    Console.Write("Введите адрес: ");
+                                    string newAdress = Console.ReadLine();
+
+                                    Console.Write("Введите текст заметки: ");
+                                    string newNote = Console.ReadLine();
+                                    if (newNote.Length > 100)
+                                    {
+                                        Console.WriteLine("Заметка более 100 символов, будут добавлены только первые 100 символов.");
+                                        newNote = newNote.Remove(100);
                                     }
-                                } while (!Regex.IsMatch(newPhone, phoneNumberCheck));
 
-                                Console.Write("Введите адрес: ");
-                                string newAdress = Console.ReadLine();
+                                    ContactData newContactData = new ContactData()
+                                    {
+                                        Phone = newPhone,
+                                        Adress = newAdress
+                                    };
+                                    Recording newEditRecording = new Recording
 
-                                Console.Write("Введите текст заметки: ");
-                                string newNote = Console.ReadLine();
-                                if (newNote.Length > 100)
-                                {
-                                    Console.WriteLine("Заметка более 100 символов, будут добавлены только первые 100 символов.");
-                                    newNote = newNote.Remove(100);
+                                    {
+                                        FirstName = newFirstName,
+                                        LastName = newLastName,
+                                        ContactData = newContactData,
+                                        Note = newNote
+
+                                    };
+                                    userEdit.EditRecord(recording, newEditRecording);
+                                    Console.WriteLine("Запись отредактирована");
+                                    isRecordEdit = true;
+                                    break;
                                 }
-
-                                ContactData newContactData = new ContactData()
+                                else
                                 {
-                                    Phone = newPhone,
-                                    Adress = newAdress
-                                };
-                                Recording newEditRecording = new Recording
-
-                                {
-                                    IdentificationData = newIdentificationData,
-                                    ContactData = newContactData,
-                                    Note = newNote
-
-                                };
-                                userEdit.EditRecord(recording, newEditRecording);
-                                Console.WriteLine("Запись отредактирована");
-                                break;
+                                    Console.WriteLine(new string('-', 60));
+                                    Console.WriteLine("Изменение контакта отменено");
+                                    isRecordEdit = true;
+                                    break;
+                                }
                             }
+                        }
+                        if (!isRecordEdit)
+                        {
+                            Console.WriteLine(new string('-', 60));
+                            Console.WriteLine("Контакт  не найдена");
+
                         }
                         notebook.SaveTextFile();
                         break;
@@ -204,7 +244,7 @@ namespace Notepade2
                         break;
 
                     case "5":
-                        Environment.Exit(1);
+                        Environment.Exit(0);
                         return;
                     default:
                         Console.WriteLine("Некорректный выбор. Попробуйте еще раз.");

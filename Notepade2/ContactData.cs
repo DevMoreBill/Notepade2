@@ -13,7 +13,7 @@ namespace Notepade2
         public string Adress
         {
             get { return adress; }
-            set { adress = value == null ? value : "Адрес не указан"; }
+            set { adress = value.Length >= 1 ? value : "Адрес не указан"; }
         }
     }
 }

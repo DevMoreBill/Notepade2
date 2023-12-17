@@ -8,21 +8,31 @@ namespace Notepade2
 {
     internal class Recording
     {
-        private string identificationData;
-        public string IdentificationData 
+        private string firstName;
+        public string FirstName 
         {
-            get {return identificationData;} 
-            set { identificationData = value==null ? value : "Безымянный"; } 
+            get {return firstName; } 
+            set { firstName = value.Length>=1 ? value : "Безымянный"; } 
         }
-        
+
+
+        private string lastName;
+        public string LastName
+        {
+            get { return lastName; }
+            set { lastName = value.Length >= 1 ? value : "Без фамилии"; }
+        }
+
+
         public ContactData ContactData { get; set; }
+
 
 
         private string note;
         public string Note
         {
             get { return note; }
-            set { note = value == null ? value : "Заметка не указана"; }
+            set { note = value.Length >= 1 ? value : "Заметка не указана"; }
         }
     }
 }
