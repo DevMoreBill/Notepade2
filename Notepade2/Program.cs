@@ -142,6 +142,8 @@ namespace Notepade2
                         }
                         notebook.SaveTextFile();
                         break;
+
+
                     case "3":
                         Console.WriteLine(new string('-', 60));
                         Console.WriteLine("Введите Имя или Фамилию контакта для редактирования:");
@@ -174,16 +176,20 @@ namespace Notepade2
                                     string inputLastName = Console.ReadLine();
                                     string newLastName = string.IsNullOrEmpty(inputLastName) ? recording.LastName : inputLastName;
 
-                                    string newPhone;
+                                    //Добавляем новый номер телефона, если поле пустое, оставляеем прежнее значение, если новый номер, проверям на соответствие формату
+                                    Console.Write("Введите телефонный номер: ");
+                                    string inputPhone = Console.ReadLine();
+                                    string newPhone = string.IsNullOrEmpty(inputPhone) ? recording.ContactData.Phone : inputPhone;
+                                    string checkNewPhone = newPhone;
                                     do
                                     {
-                                        Console.Write("Введите телефонный номер: ");
-                                        newPhone = Console.ReadLine();
-                                        if (!Regex.IsMatch(newPhone, phoneNumberCheck))
+                                        if (!Regex.IsMatch(checkNewPhone, phoneNumberCheck))
                                         {
-                                            Console.WriteLine("Некорректный формат номера телефона. Попробуйте еще раз.");
+                                            Console.Write("Некорректный формат номера телефона. Попробуйте еще раз.\nВведите телефонный номер:");
+                                            checkNewPhone = Console.ReadLine();
                                         }
-                                    } while (!Regex.IsMatch(newPhone, phoneNumberCheck));
+                                        newPhone = checkNewPhone;
+                                    } while (!Regex.IsMatch(checkNewPhone, phoneNumberCheck));
 
                                     //Добавляем новый адрес, если поле пустое, оставляеем прежнее значение
                                     Console.Write("Введите адрес: ");
