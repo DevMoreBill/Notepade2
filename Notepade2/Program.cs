@@ -114,13 +114,8 @@ namespace Notepade2
                                 Console.WriteLine("Вы уверены, что хотите удалить эту запись? (да/нет)");
                                 foreach (Recording record in userDel.records)
                                 {
-                                    Console.WriteLine(new string('-', 60));
-                                    Console.WriteLine($"\tИмя: {record.FirstName}");
-                                    Console.WriteLine($"\tФамилия: {record.LastName}");
-                                    Console.WriteLine($"\tТелефон: {record.ContactData.Phone}");
-                                    Console.WriteLine($"\tАдрес: {record.ContactData.Adress}");
-                                    Console.WriteLine($"\tПримечание: {record.Note}");
-                                    Console.WriteLine(new string('-', 60));
+                                    userDel.PrintRecord(record);
+
                                 }
                                 string confirmation = Console.ReadLine();
                                 if (confirmation.ToLower() == "да")
@@ -163,22 +158,21 @@ namespace Notepade2
                                 Console.WriteLine("Вы хотите отредактировать этот контакт? (да/нет)");
                                 foreach (Recording record in userEdit.records)
                                 {
-                                    Console.WriteLine(new string('-', 60));
-                                    Console.WriteLine($"\tИмя: {record.FirstName}");
-                                    Console.WriteLine($"\tФамилия: {record.LastName}");
-                                    Console.WriteLine($"\tТелефон: {record.ContactData.Phone}");
-                                    Console.WriteLine($"\tАдрес: {record.ContactData.Adress}");
-                                    Console.WriteLine($"\tПримечание: {record.Note}");
-                                    Console.WriteLine(new string('-', 60));
+                                    userEdit.PrintRecord(record);
                                 }
 
                                 string confirmation = Console.ReadLine();
                                 if (confirmation.ToLower() == "да")
                                 {
+                                    //Добавляем новое имя, если поле пустое, оставляеем прежнее значение
                                     Console.Write("Введите Имя: ");
-                                    string newFirstName = Console.ReadLine();
+                                    string inputFirstName = Console.ReadLine();
+                                    string newFirstName = string.IsNullOrEmpty(inputFirstName) ? recording.FirstName : inputFirstName;
+
+                                    //Добавляем новую фамилию, если поле пустое, оставляеем прежнее значение
                                     Console.Write("Введите фамилию: ");
-                                    string newLastName = Console.ReadLine();
+                                    string inputLastName = Console.ReadLine();
+                                    string newLastName = string.IsNullOrEmpty(inputLastName) ? recording.LastName : inputLastName;
 
                                     string newPhone;
                                     do
@@ -191,16 +185,21 @@ namespace Notepade2
                                         }
                                     } while (!Regex.IsMatch(newPhone, phoneNumberCheck));
 
+                                    //Добавляем новый адрес, если поле пустое, оставляеем прежнее значение
                                     Console.Write("Введите адрес: ");
-                                    string newAdress = Console.ReadLine();
+                                    string inputAddress = Console.ReadLine();
+                                    string newAdress = string.IsNullOrEmpty(inputAddress) ? recording.ContactData.Adress : inputAddress;
 
+                                    //Добавляем новую заметку, если поле пустое, оставляеем прежнее значение
                                     Console.Write("Введите текст заметки: ");
-                                    string newNote = Console.ReadLine();
+                                    string inputNote = Console.ReadLine();
+                                    string newNote = string.IsNullOrEmpty(inputNote) ? recording.Note : inputNote;
                                     if (newNote.Length > 100)
                                     {
                                         Console.WriteLine("Заметка более 100 символов, будут добавлены только первые 100 символов.");
                                         newNote = newNote.Remove(100);
                                     }
+
 
                                     ContactData newContactData = new ContactData()
                                     {
@@ -216,6 +215,8 @@ namespace Notepade2
                                         Note = newNote
 
                                     };
+
+
                                     userEdit.EditRecord(recording, newEditRecording);
                                     Console.WriteLine("Запись отредактирована");
                                     isRecordEdit = true;
@@ -239,10 +240,30 @@ namespace Notepade2
                         notebook.SaveTextFile();
                         break;
                     case "4":
-                        //добавить выбор сортировки по имени или фамилии
-                        notebook.AlphabeticalSortingFirstName();
-                        notebook.AlphabeticalSortingLastName();
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Выберите сортировку:");
+                        Console.WriteLine("\t 1. Отсортировать по имени");
+                        Console.WriteLine("\t 2. Отсортировать по фамилии");
+                        Console.WriteLine(new string('-', 60));
+                        string choiceSorting = Console.ReadLine();
+                        switch (choiceSorting)
+                        {
+                            case "1":
+                                Console.WriteLine(new string('-', 60));
+                                Console.WriteLine(" Выбрана сортировка по имени");
+                                notebook.AlphabeticalSortingFirstName();
+                                break;
+                            case "2":
+                                Console.WriteLine(new string('-', 60));
+                                Console.WriteLine(" Выбрана сортировка по фамилии");
+                                notebook.AlphabeticalSortingLastName();
+                                break;
+                            default:
+                                Console.WriteLine(new string('-', 60));
+                                Console.WriteLine("Некорректный выбор. Попробуйте еще раз.");
+                                break;
 
+                        }
                         break;
 
                     case "5":

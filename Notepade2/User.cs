@@ -50,5 +50,16 @@ namespace Notepade2
             return null;
         }
 
+        public void PrintRecord(Recording recording)
+        {
+            Console.WriteLine(new string('-', 60));
+            Console.WriteLine($"\tИмя: {recording.FirstName}");
+            Console.WriteLine($"\tФамилия: {recording.LastName}");
+            Console.WriteLine($"\tТелефон: {recording.ContactData.Phone}");
+            Console.WriteLine($"\tАдрес: {recording.ContactData.Adress}");
+            Console.WriteLine($"\tПримечание: {recording.Note}");
+            Console.WriteLine(new string('-', 60));
+        }
+
     }
 }
