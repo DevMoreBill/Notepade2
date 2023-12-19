@@ -97,6 +97,9 @@ namespace Notepade2
                         notebook.SaveTextFile();
                         Console.WriteLine("Запись добавлена");
                         Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
 
 
@@ -143,6 +146,10 @@ namespace Notepade2
                         }
                         notebook.SaveTextFile();
                         break;
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        Console.Clear();
 
 
                     case "3":
@@ -245,6 +252,10 @@ namespace Notepade2
 
                         }
                         notebook.SaveTextFile();
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "4":
                         Console.WriteLine(new string('-', 60));
@@ -271,6 +282,10 @@ namespace Notepade2
                                 break;
 
                         }
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        Console.Clear();
                         break;
                     case "5":
                         Console.WriteLine(new string('-', 60));
@@ -285,27 +300,23 @@ namespace Notepade2
                             Recording recording = userEdit.GetNameData(nameToSearch);
                             if (recording != null)
                             {
-                                
+
                                 foreach (Recording record in userEdit.records)
                                 {
                                     userEdit.PrintRecord(record);
                                 }
-                                
                                 isRecordSearch = true;
                             }
+                        }
+                        if (!isRecordSearch)
+                        {
+                            Console.WriteLine(new string('-', 60));
+                            Console.WriteLine("Контакт не найден. Попробуйте ввести другие данные для поиска");
                         }
                         Console.WriteLine(new string('-', 60));
                         Console.WriteLine("Нажмите любую клавишу для продолжения...");
                         Console.ReadKey();
                         Console.Clear();
-                        
-                        if (!isRecordSearch)
-                        {
-                            Console.WriteLine(new string('-', 60));
-                            Console.WriteLine("Контакт не найден");
-                            Console.ReadKey();
-                            Console.Clear();
-                        }
                         break;
                     case "6":
                         Environment.Exit(0);
