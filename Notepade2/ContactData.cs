@@ -2,13 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
 namespace Notepade2
 {
     internal class ContactData
     {
-        public string Phone { get; set; }
+        private string phone;
+        public string Phone
+
+        {
+            get { return phone; }
+            set
+
+            {
+                phone = Regex.Replace(value, @"^8", "+7").Replace(@"\D", "");
+
+            }
+        }
         private string adress;
         public string Adress
         {

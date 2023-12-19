@@ -42,7 +42,11 @@ namespace Notepade2
 
             foreach (var recording in records)
             {
-                if (recording.FirstName.Contains(searchFirstOrLastName) || recording.LastName.Contains(searchFirstOrLastName))
+                if (recording.FirstName.ToLower().Contains(searchFirstOrLastName) ||
+                    recording.LastName.ToLower().Contains(searchFirstOrLastName) ||
+                    recording.ContactData.Phone.ToLower().Contains(searchFirstOrLastName) ||
+                    recording.ContactData.Adress.ToLower().Contains(searchFirstOrLastName) ||
+                    recording.Note.ToLower().Contains(searchFirstOrLastName))
                 {
                     return recording;
                 }
@@ -58,7 +62,7 @@ namespace Notepade2
             Console.WriteLine($"\tТелефон: {recording.ContactData.Phone}");
             Console.WriteLine($"\tАдрес: {recording.ContactData.Adress}");
             Console.WriteLine($"\tПримечание: {recording.Note}");
-            Console.WriteLine(new string('-', 60));
+            
         }
 
     }

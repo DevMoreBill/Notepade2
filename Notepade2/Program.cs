@@ -38,7 +38,8 @@ namespace Notepade2
                 Console.WriteLine("\t2. Удалить запись");
                 Console.WriteLine("\t3. Редактировать запись");
                 Console.WriteLine("\t4. Вывести все записи в алфавитном порядке");
-                Console.WriteLine("\t5. Выход");
+                Console.WriteLine("\t5. Найти контакт");
+                Console.WriteLine("\t6. Выход");
                 Console.WriteLine(new string('-', 60));
 
                 string choice = Console.ReadLine();
@@ -103,7 +104,7 @@ namespace Notepade2
                         Console.WriteLine(new string('-', 60));
                         Console.WriteLine("Введите Имя или Фамилию контакта для удаления:");
                         Console.WriteLine(new string('-', 60));
-                        string nameToDelete = Console.ReadLine();
+                        string nameToDelete = Console.ReadLine().ToLower();
                         bool isRecordDeleted = false;
 
                         foreach (User userDel in notebook.Users)
@@ -146,9 +147,9 @@ namespace Notepade2
 
                     case "3":
                         Console.WriteLine(new string('-', 60));
-                        Console.WriteLine("Введите Имя или Фамилию контакта для редактирования:");
+                        Console.WriteLine("Введите данные контакта для редактирования:");
                         Console.WriteLine(new string('-', 60));
-                        string nameToEdit = Console.ReadLine();
+                        string nameToEdit = Console.ReadLine().ToLower();
                         bool isRecordEdit = false;
                         // Поиск записи по идентификационным данным и редактирование
 
@@ -271,8 +272,42 @@ namespace Notepade2
 
                         }
                         break;
-
                     case "5":
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Введите данные контакта для поиска:");
+                        Console.WriteLine(new string('-', 60));
+                        string nameToSearch = Console.ReadLine().ToLower();
+                        bool isRecordSearch = false;
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Результаты поиска:");
+                        foreach (User userEdit in notebook.Users)
+                        {
+                            Recording recording = userEdit.GetNameData(nameToSearch);
+                            if (recording != null)
+                            {
+                                
+                                foreach (Recording record in userEdit.records)
+                                {
+                                    userEdit.PrintRecord(record);
+                                }
+                                
+                                isRecordSearch = true;
+                            }
+                        }
+                        Console.WriteLine(new string('-', 60));
+                        Console.WriteLine("Нажмите любую клавишу для продолжения...");
+                        Console.ReadKey();
+                        Console.Clear();
+                        
+                        if (!isRecordSearch)
+                        {
+                            Console.WriteLine(new string('-', 60));
+                            Console.WriteLine("Контакт не найден");
+                            Console.ReadKey();
+                            Console.Clear();
+                        }
+                        break;
+                    case "6":
                         Environment.Exit(0);
                         return;
                     default:
