@@ -64,6 +64,6 @@ namespace Notepade2
             Console.WriteLine($"\tПримечание: {recording.Note}");
             
         }
-
+       
     }
 }
