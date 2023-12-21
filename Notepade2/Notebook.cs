@@ -101,43 +101,45 @@ namespace Notepade2
             Utils.SetHeadlineOrEnding("Запись добавлена");
             Utils.PressKeyToContinue();
         }
-
+        // найти, есть ли запись с указанными данными удалить запись и записать в файл
         public void DeleteRecord()
         {
-            string nameToDelete = Utils.RequestData("Введите Имя или Фамилию контакта для удаления:  ").ToLower();
-            bool isRecordDeleted = false;
-            foreach (User userDel in Users)
+            var nameToDelete = Utils.RequestData("Введите Имя или Фамилию контакта для удаления:  ").ToLower();
+            bool isRecordDelete = false;
+            foreach (User userDelete in Users)
             {
-                Recording recording = userDel.GetNameData(nameToDelete);
+                Recording recording = userDelete.GetNameData(nameToDelete);
                 if (recording != null)
                 {
-                    foreach (Recording record in userDel.records)
+                    foreach (Recording record in userDelete.records)
                     {
-                        userDel.PrintRecord(record);
+                        userDelete.PrintRecord(record);
                     }
                     var confirmation = Utils.RequestYesOrNo("Вы уверены, что хотите удалить эту запись? (да/нет):  ");
                     if (confirmation.ToLower() == "да")
                     {
-                        userDel.DeleteRecording(recording);
+                        userDelete.DeleteRecording(recording);
+                        Users.Remove(userDelete);
+                        isRecordDelete = true;
+                        
+                        SaveTextFile();
                         Utils.SetHeadlineOrEnding("Запись удалена");
-                        isRecordDeleted = true;
-                        break;
-                    }
-                    else
-                    {
-                        Utils.SetHeadlineOrEnding("Удаление отменено");
-                        isRecordDeleted = true;
+                        Utils.PressKeyToContinue();
+                        
                         break;
                     }
                 }
             }
-            if (!isRecordDeleted)
+            if (!isRecordDelete)
             {
-                Utils.SetHeadlineOrEnding("Запись с указанными данными не найдена");
+                Utils.SetHeadlineOrEnding("Запись не найдена");
+                Utils.PressKeyToContinue();
             }
-            SaveTextFile();
-            Utils.PressKeyToContinue();
         }
+
+
+
+
         public void EditRecord()
         {
             var nameToEdit = Utils.RequestData("Введите Имя или Фамилию контакта для редактирования:  ").ToLower();
@@ -175,6 +177,7 @@ namespace Notepade2
                         var newEditRecording = AssignValues(newFirstName, newLastName, newPhone, newAdress, newNote);
 
                         userEdit.EditRecord(recording, newEditRecording);
+                        
                         Utils.SetHeadlineOrEnding("Запись отредактирована");
                         isRecordEdit = true;
                         break;
@@ -189,14 +192,14 @@ namespace Notepade2
             }
             if (!isRecordEdit)
             {
-                Utils.SetHeadlineOrEnding("Контакт  не найден");
+                Utils.SetHeadlineOrEnding("Контакт не найден");
             }
             SaveTextFile();
             Utils.PressKeyToContinue();
         }
         public void SortRecord()
         {
-            var choiceSorting = Utils.RequestYesOrNo("Выберите сортировку: \n\t 1. Отсортировать по имени\n\t 2. Отсортировать по фамилии");
+            var choiceSorting = Utils.RequestYesOrNo("Выберите сортировку: \n\t 1. Отсортировать по имени\n\t 2. Отсортировать по фамилии\n");
             switch (choiceSorting)
             {
                 case "1":
@@ -217,7 +220,7 @@ namespace Notepade2
 
         public void SearchRecord()
         {
-            var nameToSearch = Utils.RequestData("Введите Имя или Фамилию контакта для поиска:  "); 
+            var nameToSearch = Utils.RequestData("Введите Имя или Фамилию контакта для поиска:  ").ToLower(); 
             bool isRecordSearch = false;
             Utils.SetHeadlineOrEnding("Результат поиска:" + nameToSearch);
             foreach (User userEdit in Users)
@@ -239,7 +242,7 @@ namespace Notepade2
             }
             Utils.PressKeyToContinue();
         }
-
+        //сортировка списка контактов по имени
         public void AlphabeticalSortingFirstName()
         {
             users = users.OrderBy(u => u.records.First().FirstName).ToList();
@@ -252,7 +255,6 @@ namespace Notepade2
 
             GetAllRecordings();
         }
-
         public Recording AssignValues(string firstName, string lastName, string phone, string adress, string note)
         {
 

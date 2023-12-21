@@ -17,7 +17,8 @@ namespace Notepade2
             {
                 if (!Regex.IsMatch(inputString, phoneNumberCheck))
                 {
-                    Console.WriteLine("Некорректный формат номера телефона. Попробуйте еще раз.");
+                    Console.Write("Некорректный формат номера телефона. Попробуйте еще раз:  ");
+                    inputString = Console.ReadLine();
                 }
             } while (!Regex.IsMatch(inputString, phoneNumberCheck));
             return inputString;
@@ -59,5 +60,6 @@ namespace Notepade2
             Console.ReadKey();
             Console.Clear();
         }
+
     }
 }
